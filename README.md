@@ -9,7 +9,11 @@ what's the worst that could happen? This doesn't fix changing the component atta
 # How to use
 
 Just right click on the borked component and select the option in the submenu to fix the pointer. Can also
-select multiple components at once.
+select multiple components at once. (The video is of a slightly older build, but it's the same workflow)
+
+
+https://github.com/Duroxxigar/ComponentPointerFixer/assets/16636969/4ceb62c7-5ae5-425f-97fc-b88097ac8a5b
+
 
 # Special Thanks
 
