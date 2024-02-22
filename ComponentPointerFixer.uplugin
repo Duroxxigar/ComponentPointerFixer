@@ -6,7 +6,7 @@
 	"Description": "A tool that attempts to salvage components that have a blank inspector.",
 	"Category": "Editor",
 	"CreatedBy": "Jake Young",
-	"CreatedByURL": "",
+	"CreatedByURL": "https://github.com/Duroxxigar/ComponentPointerFixer",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"CanContainContent": true,
