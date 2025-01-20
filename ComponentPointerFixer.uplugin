@@ -1,7 +1,7 @@
 ﻿{
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.1",
 	"FriendlyName": "Component Pointer Fixer",
 	"Description": "A tool that attempts to salvage components that have a blank inspector.",
 	"Category": "Editor",

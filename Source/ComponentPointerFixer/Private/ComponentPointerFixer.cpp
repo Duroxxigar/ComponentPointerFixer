@@ -38,8 +38,8 @@ namespace
 			return false;
 		}
 
-		const auto& blueprintEditorModule = FModuleManager::LoadModuleChecked<FBlueprintEditorModule>("Kismet");
-		for (const auto& openEditor : blueprintEditorModule.GetBlueprintEditors())
+		const FBlueprintEditorModule& blueprintEditorModule = FModuleManager::LoadModuleChecked<FBlueprintEditorModule>("Kismet");
+		for (const TSharedRef<IBlueprintEditor>& openEditor : blueprintEditorModule.GetBlueprintEditors())
 		{
 			const TSharedRef<FBlueprintEditor>& openBlueprintEditor = StaticCastSharedRef<FBlueprintEditor>(openEditor);
 			if (openBlueprintEditor->GetSubobjectEditor() == subobjectEditor)
@@ -64,8 +64,8 @@ void FComponentPointerFixerModule::RegisterMenus()
 {
 	FToolMenuOwnerScoped ownerScoped(this);
 
-	auto* menu = UToolMenus::Get()->ExtendMenu("Kismet.SubobjectEditorContextMenu");
-	auto& section = menu->AddSection("Component Pointer Fixer", LOCTEXT("ComponentFixerHeader", "Component Pointer Fixer"));
+	UToolMenu* menu = UToolMenus::Get()->ExtendMenu("Kismet.SubobjectEditorContextMenu");
+	FToolMenuSection& section = menu->AddSection("Component Pointer Fixer", LOCTEXT("ComponentFixerHeader", "Component Pointer Fixer"));
 	RegisterFixAction(section);
 }
 
@@ -81,16 +81,16 @@ void FComponentPointerFixerModule::RegisterFixAction(FToolMenuSection& section)
 			return;
 		}
 
-		const auto selectedNodes = subobjectEditor->GetSelectedNodes();
+		const TArray<TSharedPtr<FSubobjectEditorTreeNode>> selectedNodes = subobjectEditor->GetSelectedNodes();
 		if (selectedNodes.Num() < 1)
 		{
 			return;
 		}
     	
-		auto* cdo = selectedNodes[0]->GetObject()->GetOuter()->GetClass()->GetDefaultObject(); // this is gross, oh well
-		for (auto node : selectedNodes)
+		UObject* cdo = selectedNodes[0]->GetObject()->GetOuter()->GetClass()->GetDefaultObject(); // this is gross, oh well
+		for (TSharedPtr<FSubobjectEditorTreeNode> node : selectedNodes)
 		{
-			auto* outer = node->GetObject()->GetOuter();
+			UObject* outer = node->GetObject()->GetOuter();
 			FObjectProperty* componentPointer = FindFProperty<FObjectProperty>(outer->GetClass(), node->GetVariableName());
 
 			if (UObject** valuePtr = componentPointer->ContainerPtrToValuePtr<UObject*>(cdo))
@@ -99,7 +99,7 @@ void FComponentPointerFixerModule::RegisterFixAction(FToolMenuSection& section)
 			}
 		}
 
-		auto* editor = GEditor->GetEditorSubsystem<UEditorAssetSubsystem>();
+		UEditorAssetSubsystem* editor = GEditor->GetEditorSubsystem<UEditorAssetSubsystem>();
 		editor->SaveAsset(cdo->GetClass()->GetPackage()->GetFullName(), false);
 	});
     
